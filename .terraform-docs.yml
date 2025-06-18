@@ -1,0 +1,79 @@
+sort:
+  by: required
+
+content: |-
+  {{ .Header }}
+  # Imperva WAF Gateway on Google Cloud
+  This Terraform module provisions Imperva WAF Gateway instances on GCP in multiple supported configurations.
+  {{ .Requirements }}
+
+  For the GCP prerequisites, please see the [documentation](https://docs.imperva.com/bundle/v15.3-waf-on-google-cloud-platform-installation-guide/page/84150.htm).
+
+  ## Usage
+  ```
+  provider "google" {
+    project = "my-project"
+    region = "europe-west3"
+  }
+
+  variable "mx_password" {
+    type = string
+    description = "The password for the WAF Management Server"
+    sensitive = true
+  }
+
+  module "imperva_gw" {
+    source = "imperva/waf-gw/google"
+    waf_version = "latest"
+    model = "GV2500"
+    management_server_config = { # Required
+      ip = "10.2.3.4" # Can be replaced with the MX module output
+      password = var.mx_password
+      vpc_network = "my-management-network"
+      network_tag = "imperva-mx" # Can be replaced with the MX module output
+    }
+    # Optional auto-scaling configuration (remove for static instances)
+    auto_scaling_config = {
+      min_size = 2
+      max_size = 3
+    }
+    # Optional load balancer configuration (remove for no load balancer)
+    load_balancer_config = {
+      rules = [
+        {
+          frontend_port = 80
+          frontend_protocol = "HTTP"
+          backend_port = 8080
+          backend_protocol = "HTTP"
+        },
+        {
+          frontend_port = 443
+          frontend_protocol = "HTTPS"
+          backend_port = 8080
+          backend_protocol = "HTTP"
+          tls = {
+            key = file("key.pem")
+            certificate = file("cert.pem")
+          }
+        }
+      ]
+      type = "GLOBAL"
+    }
+    instance_type = "n2-standard-4"
+    zones = [
+      "europe-west3-a",
+      "europe-west3-b",
+      "europe-west3-c"
+    ]
+    primary_vpc_network = "my-primary-network"
+    primary_subnet_name = "my-primary-subnet"
+    # Optional management interface configuration (remove for single interface configuration)
+    management_vpc_network = "my-management-network"
+    management_subnet_name = "my-management-subnet"
+  } 
+  ```
+  {{ .Modules }}
+  {{ .Resources }}
+  {{ .Inputs }}
+  {{ .Outputs }}
+  {{ .Footer }}
