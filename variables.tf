@@ -199,7 +199,7 @@ variable "instance_type" {
 
 variable "waf_version" {
   type = string
-  description = "The Imperva WAF Gateway version to deploy (format: 'x.y.0.z', 'latest' or 'latest_lts')."
+  description = "The Imperva WAF Gateway version to deploy (format: 'x.y.0.z')."
   validation {
     condition = contains(
       module.commons.validation.gcp.waf_version.allowed_values,

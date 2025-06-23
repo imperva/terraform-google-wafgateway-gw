@@ -11,7 +11,8 @@ This Terraform module provisions Imperva WAF Gateway instances on GCP in multipl
 For the GCP prerequisites, please see the [documentation](https://docs.imperva.com/bundle/v15.3-waf-on-google-cloud-platform-installation-guide/page/84150.htm).
 
 ## Usage
-```
+### Basic example
+```hcl
 provider "google" {
   project = "my-project"
   region = "europe-west3"
@@ -24,7 +25,7 @@ variable "mx_password" {
 }
 
 module "imperva_gw" {
-  source = "imperva/waf-gw/google"
+  source = "imperva/wafgateway/gw/google"
   waf_version = "latest"
   model = "GV2500"
   management_server_config = { # Required
@@ -73,6 +74,34 @@ module "imperva_gw" {
   management_subnet_name = "my-management-subnet"
 } 
 ```
+### Supported WAF Gateway versions
+This version of the module supports the following WAF Gateway versions:
+* 14.7.0.110
+* 14.7.0.120
+* 14.7.0.130
+* 15.2.0.10
+* 15.3.0.10
+* 15.3.0.20
+
+The `waf_version` input variable must be set to one of these versions. If you need to use a different version, please open an issue or pull request.
+
+### Cross-module reference
+If you are using the Gateway module in conjunction with the MX module, you can reference the MX outputs directly in the Gateway module configuration:
+```hcl
+module "imperva_gw" {
+  source = "imperva/wafgateway/gw/google"
+  waf_version = "15.3.0.20"
+  management_server_config = {
+    ip = module.imperva_mx.management_server_ip
+    password = var.mx_password
+    vpc_network = "my-vpc-network"
+    network_tag = module.imperva_mx.network_tag
+  }
+  ...
+}
+```
+This allows you to register your WAF Gateway instances to your MX without defining explicit dependencies or hard-coding the MX IP address or network tag.
+  
 ## Modules
 
 | Name | Source | Version |
@@ -144,7 +173,7 @@ module "imperva_gw" {
 | <a name="input_model"></a> [model](#input\_model) | The desired model for your Gateway instances. This setting affects the maximum network throughput of your Gateway instances. | `string` | n/a | yes |
 | <a name="input_primary_subnet_name"></a> [primary\_subnet\_name](#input\_primary\_subnet\_name) | The primary (data) subnet name for your WAF Gateway instance(s). The subnet must belong to the specified primary VPC network. | `string` | n/a | yes |
 | <a name="input_primary_vpc_network"></a> [primary\_vpc\_network](#input\_primary\_vpc\_network) | The primary (data) VPC network for your Gateway instances. | `string` | n/a | yes |
-| <a name="input_waf_version"></a> [waf\_version](#input\_waf\_version) | The Imperva WAF Gateway version to deploy (format: 'x.y.0.z', 'latest' or 'latest\_lts'). | `string` | n/a | yes |
+| <a name="input_waf_version"></a> [waf\_version](#input\_waf\_version) | The Imperva WAF Gateway version to deploy (format: 'x.y.0.z'). | `string` | n/a | yes |
 | <a name="input_zones"></a> [zones](#input\_zones) | The zones where your Gateway instance(s) will be deployed. All zones must be under the region configured for the google provider. | `list(string)` | n/a | yes |
 | <a name="input_auto_scaling_config"></a> [auto\_scaling\_config](#input\_auto\_scaling\_config) | Configuration for the auto-scaling group that will manage the Gateway instances (optional). | <pre>object({<br/>    min_size = number<br/>    max_size = number<br/>  })</pre> | `null` | no |
 | <a name="input_block_project_ssh_keys"></a> [block\_project\_ssh\_keys](#input\_block\_project\_ssh\_keys) | When true, project-wide SSH keys cannot be used to access the deployed instances. | `bool` | `false` | no |

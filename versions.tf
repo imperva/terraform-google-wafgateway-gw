@@ -6,8 +6,5 @@ terraform {
       source  = "hashicorp/google"
       version = ">= 6.0.0"
     }
-    semvers = {
-      source = "anapsix/semvers"
-    }
   }
 }
