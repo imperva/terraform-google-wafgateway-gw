@@ -217,7 +217,7 @@ resource "random_string" "resource_prefix" {
 }
 
 resource "google_service_account" "deployment_service_account" {
-  account_id = "${local.resource_prefix}-svc-acc"
+  account_id = "${local.resource_prefix}-gw-svc-acc"
 }
 
 resource "google_compute_firewall" "gw_firewall" {
@@ -570,34 +570,6 @@ resource "google_cloud_run_service_iam_member" "cloud_run_invoker" {
   role = "roles/run.invoker"
   member = "serviceAccount:${google_service_account.deployment_service_account.email}"
 }
-
-####### OLD #######
-# resource "google_cloudfunctions_function" "gw_termination_handler" {
-#   count = local.is_autoscaling ? 1 : 0
-#   name = "${local.resource_prefix}-gw-termination-handler"
-#   description = "Removes auto-scaling WAF Gateway entries from the Management Server"
-#   runtime = "python39"
-#   available_memory_mb = 128
-#   source_archive_bucket = google_storage_bucket.gw_termination_function_source_bucket[0].name
-#   source_archive_object = google_storage_bucket_object.gw_termination_function_source_object[0].name
-#   entry_point = "handler"
-#   timeout = 270
-#   service_account_email = google_service_account.deployment_service_account.email
-#   environment_variables = {
-#     MX_HOST = local.management_ip
-#   }
-#   vpc_connector = local.create_vpc_connector_resources ? google_vpc_access_connector.vpc_access_connector[0].id : null
-#   vpc_connector_egress_settings = "PRIVATE_RANGES_ONLY"
-#   secret_environment_variables {
-#     key = "MX_PASSWORD"
-#     secret = local.mx_secret_id
-#     version = "latest"
-#   }
-#   event_trigger {
-#     event_type = "google.pubsub.topic.publish"
-#     resource = google_pubsub_topic.gw_termination_pubsub_topic[0].id
-#   }
-# }
 
 resource "google_compute_health_check" "gw_lb_healthcheck" {
   count = local.is_global_load_balancing ? 1 : 0

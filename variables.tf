@@ -1,6 +1,6 @@
 variable "deployment_name" {
   type        = string
-  description = "A unique prefix for all deployed resources."
+  description = "A unique prefix for all deployed resources. If not provided, a random prefix will be generated."
   default = ""
   validation {
     condition     = var.deployment_name == "" || can(regex(module.commons.validation.gcp.standard_name.regex, var.deployment_name))
