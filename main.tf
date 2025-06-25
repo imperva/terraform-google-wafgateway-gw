@@ -205,7 +205,8 @@ data "dns_txt_record_set" "google_cloud_eiops" {
 data "google_client_config" "this" {}
 
 module "commons" {
-  source = "../waf-gcp-commons"
+  source = "imperva/wafgateway-commons/google"
+  version = "1.0.1"
 }
 
 resource "random_string" "resource_prefix" {
