@@ -482,7 +482,7 @@ resource "random_integer" "random_ip_octet" {
 
 resource "google_vpc_access_connector" "vpc_access_connector" {
   count = local.create_vpc_connector_resources ? 1 : 0
-  name = "${local.resource_prefix}-vpc-conn"
+  name = "${local.resource_prefix}-conn"
   network = var.management_server_config.vpc_network
   ip_cidr_range = "10.${random_integer.random_ip_octet[0].result}.0.0/28"
   min_instances = 2
@@ -555,6 +555,7 @@ resource "google_cloudfunctions2_function" "gw_termination_handler" {
     event_type = "google.cloud.pubsub.topic.v1.messagePublished"
     pubsub_topic = google_pubsub_topic.gw_termination_pubsub_topic[0].id
     service_account_email = google_service_account.deployment_service_account.email
+    retry_policy = "RETRY_POLICY_DO_NOT_RETRY"
   }
 }
 
@@ -608,6 +609,7 @@ resource "google_compute_backend_service" "gw_backend_service" {
   backend {
     group = google_compute_region_instance_group_manager.gw_igm[0].instance_group
     max_utilization = 1.0
+    capacity_scaler = 1.0
     balancing_mode = "UTILIZATION"
   }
 }
