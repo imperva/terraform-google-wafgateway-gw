@@ -75,12 +75,12 @@ content: |-
   ```
   ### Supported WAF Gateway versions
   This version of the module supports the following WAF Gateway versions:
-  * 14.7.0.110
-  * 14.7.0.120
   * 14.7.0.130
-  * 15.2.0.10
+  * 14.7.0.140
+  * 14.7.0.150
   * 15.3.0.10
   * 15.3.0.20
+  * 15.4.0.10
 
   The `waf_version` input variable must be set to one of these versions. If you need to use a different version, please open an issue or pull request.
 

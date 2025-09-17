@@ -76,12 +76,12 @@ module "imperva_gw" {
 ```
 ### Supported WAF Gateway versions
 This version of the module supports the following WAF Gateway versions:
-* 14.7.0.110
-* 14.7.0.120
 * 14.7.0.130
-* 15.2.0.10
+* 14.7.0.140
+* 14.7.0.150
 * 15.3.0.10
 * 15.3.0.20
+* 15.4.0.10
 
 The `waf_version` input variable must be set to one of these versions. If you need to use a different version, please open an issue or pull request.
 
@@ -106,7 +106,7 @@ This allows you to register your WAF Gateway instances to your MX without defini
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_commons"></a> [commons](#module\_commons) | ../waf-gcp-commons | n/a |
+| <a name="module_commons"></a> [commons](#module\_commons) | imperva/wafgateway-commons/google | 1.1.0 |
 ## Resources
 
 | Name | Type |
@@ -186,4 +186,10 @@ This allows you to register your WAF Gateway instances to your MX without defini
 | <a name="input_timezone"></a> [timezone](#input\_timezone) | The desired timezone for your Management Server instance. | `string` | `"UTC"` | no |
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_instance_group_name"></a> [instance\_group\_name](#output\_instance\_group\_name) | n/a |
+| <a name="output_instance_names"></a> [instance\_names](#output\_instance\_names) | n/a |
+| <a name="output_load_balancer_names"></a> [load\_balancer\_names](#output\_load\_balancer\_names) | n/a |
+| <a name="output_static_management_addresses"></a> [static\_management\_addresses](#output\_static\_management\_addresses) | n/a |
+| <a name="output_static_primary_addresses"></a> [static\_primary\_addresses](#output\_static\_primary\_addresses) | n/a |
