@@ -76,9 +76,9 @@ module "imperva_gw" {
 ```
 ### Supported WAF Gateway versions
 This version of the module supports the following WAF Gateway versions:
-* 14.7.0.130
 * 14.7.0.140
 * 14.7.0.150
+* 14.7.0.160
 * 15.3.0.10
 * 15.3.0.20
 * 15.4.0.10
@@ -106,7 +106,7 @@ This allows you to register your WAF Gateway instances to your MX without defini
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_commons"></a> [commons](#module\_commons) | imperva/wafgateway-commons/google | 1.1.0 |
+| <a name="module_commons"></a> [commons](#module\_commons) | imperva/wafgateway-commons/google | 1.2.0 |
 ## Resources
 
 | Name | Type |
@@ -182,8 +182,11 @@ This allows you to register your WAF Gateway instances to your MX without defini
 | <a name="input_management_subnet_name"></a> [management\_subnet\_name](#input\_management\_subnet\_name) | The management subnet name for your WAF Gateway instance(s). The subnet must belong to the specified management VPC network. | `string` | `""` | no |
 | <a name="input_management_vpc_network"></a> [management\_vpc\_network](#input\_management\_vpc\_network) | The management VPC network for your Gateway instances. Must be different from the primary VPC network. Leave empty for a single-interface configuration. | `string` | `""` | no |
 | <a name="input_number_of_gateways"></a> [number\_of\_gateways](#input\_number\_of\_gateways) | The number of WAF Gateway instances to deploy (optional). Use this setting to deploy static (non-scaling) Gateway instances. | `number` | `null` | no |
-| <a name="input_ssh_access_source_ranges"></a> [ssh\_access\_source\_ranges](#input\_ssh\_access\_source\_ranges) | A list of IPv4 ranges in CIDR format that should have access to your Management Server via port 22 (e.g. 10.0.1.0/24). | `list(string)` | `[]` | no |
+| <a name="input_post_script"></a> [post\_script](#input\_post\_script) | An optional bash script or command that will be executed at the end of the Gateway instance startup. | `string` | `""` | no |
+| <a name="input_ssh_access_source_ranges"></a> [ssh\_access\_source\_ranges](#input\_ssh\_access\_source\_ranges) | A list of IPv4 ranges in CIDR format that should have access to your Gateway instances via port 22 (e.g. 10.0.1.0/24). | `list(string)` | `[]` | no |
 | <a name="input_timezone"></a> [timezone](#input\_timezone) | The desired timezone for your Management Server instance. | `string` | `"UTC"` | no |
+| <a name="input_traffic_ports"></a> [traffic\_ports](#input\_traffic\_ports) | A list of additional TCP ports (besides the load balancer ports) that should be allowed for inbound traffic to the Gateway instances. | `list(number)` | `[]` | no |
+| <a name="input_traffic_source_ranges"></a> [traffic\_source\_ranges](#input\_traffic\_source\_ranges) | A list of IPv4 ranges in CIDR format that should have access to your Gateways' traffic ports (e.g. 10.0.1.0/24). | `list(string)` | `[]` | no |
 ## Outputs
 
 | Name | Description |
