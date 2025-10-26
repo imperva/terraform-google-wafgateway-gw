@@ -29,6 +29,7 @@ data "template_cloudinit_config" "gw_gcp_deploy" {
       else
         echo "Already deployed.." 
       fi
+      ${var.post_script}
     EOF
   }
 }

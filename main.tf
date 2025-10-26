@@ -30,6 +30,22 @@ locals {
   cloud_eiops_ranges = try([for range in regexall("ip4:?[^ ]+", join(" ", data.dns_txt_record_set.google_cloud_eiops[0].records)): replace(range, "ip4:", "")], [])
   gw_tag = "${local.resource_prefix}-gw"
   gw_fw_rules = merge(
+    length(var.traffic_source_ranges) > 0 && length(var.traffic_ports) > 0 ? {
+      TRAFFIC = {
+        name = "${local.resource_prefix}-gw-traffic-access"
+        direction = "INGRESS"
+        network = var.primary_vpc_network
+        source_ranges = var.traffic_source_ranges
+        source_tags = []
+        target_tags = [
+          local.gw_tag
+        ]
+        allow = [{
+          protocol = "tcp"
+          ports = var.traffic_ports
+        }]
+      }
+    } : {},
     length(var.ssh_access_source_ranges) > 0 ? {
       SSH = {
         name = "${local.resource_prefix}-gw-ssh-access"
@@ -206,7 +222,7 @@ data "google_client_config" "this" {}
 
 module "commons" {
   source = "imperva/wafgateway-commons/google"
-  version = "1.1.0"
+  version = "1.2.0"
 }
 
 resource "random_string" "resource_prefix" {

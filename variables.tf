@@ -76,7 +76,7 @@ variable "model" {
 variable "ssh_access_source_ranges" {
   type        = list(string)
   default     = []
-  description = "A list of IPv4 ranges in CIDR format that should have access to your Management Server via port 22 (e.g. 10.0.1.0/24)."
+  description = "A list of IPv4 ranges in CIDR format that should have access to your Gateway instances via port 22 (e.g. 10.0.1.0/24)."
   validation {
     condition = alltrue(
       [
@@ -327,5 +327,42 @@ variable "load_balancer_config" {
       )
     )
     error_message = module.commons.validation.global.ipv4_address.error_message
+  }
+}
+
+variable "post_script" {
+  type        = string
+  description = "An optional bash script or command that will be executed at the end of the Gateway instance startup."
+  default     = ""
+}
+
+variable "traffic_ports" {
+  type        = list(number)
+  description = "A list of additional TCP ports (besides the load balancer ports) that should be allowed for inbound traffic to the Gateway instances."
+  default     = []
+  validation {
+    condition = alltrue([
+      for port in var.traffic_ports: port >= 1 && port <= 65535
+    ])
+    error_message = "Traffic ports must be between 1 and 65535."
+  }
+}
+
+variable "traffic_source_ranges" {
+  type        = list(string)
+  default     = []
+  description = "A list of IPv4 ranges in CIDR format that should have access to your Gateways' traffic ports (e.g. 10.0.1.0/24)."
+  validation {
+    condition = alltrue(
+      [
+        for range in var.traffic_source_ranges : can(
+          regex(
+            module.commons.validation.global.ipv4_cidr.regex,
+            range
+          )
+        )
+      ]
+    )
+    error_message = module.commons.validation.global.ipv4_cidr.error_message
   }
 }
