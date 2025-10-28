@@ -191,8 +191,8 @@ This allows you to register your WAF Gateway instances to your MX without defini
 
 | Name | Description |
 |------|-------------|
-| <a name="output_instance_group_name"></a> [instance\_group\_name](#output\_instance\_group\_name) | n/a |
-| <a name="output_instance_names"></a> [instance\_names](#output\_instance\_names) | n/a |
-| <a name="output_load_balancer_names"></a> [load\_balancer\_names](#output\_load\_balancer\_names) | n/a |
-| <a name="output_static_management_addresses"></a> [static\_management\_addresses](#output\_static\_management\_addresses) | n/a |
-| <a name="output_static_primary_addresses"></a> [static\_primary\_addresses](#output\_static\_primary\_addresses) | n/a |
+| <a name="output_instance_group_name"></a> [instance\_group\_name](#output\_instance\_group\_name) | Name of the instance group manager for Gateway instances. Populated only if autoscaling is enabled. |
+| <a name="output_instance_names"></a> [instance\_names](#output\_instance\_names) | List of names of the Gateway instances. Populated only if autoscaling is disabled. |
+| <a name="output_load_balancer_names"></a> [load\_balancer\_names](#output\_load\_balancer\_names) | List of load balancer names associated with the Gateway instances. Populated only if load balancing is enabled. |
+| <a name="output_static_management_addresses"></a> [static\_management\_addresses](#output\_static\_management\_addresses) | List of static management internal IP addresses of the Gateway instances. Populated only if dual NIC is enabled and autoscaling is disabled. |
+| <a name="output_static_primary_addresses"></a> [static\_primary\_addresses](#output\_static\_primary\_addresses) | List of static primary internal IP addresses of the Gateway instances. Populated only if autoscaling is disabled. |
