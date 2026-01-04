@@ -492,6 +492,9 @@ resource "google_logging_project_sink" "gw_termination_log_sink" {
 
 resource "random_integer" "random_ip_octet" {
   count = local.is_autoscaling ? 1 : 0
+  keepers = {
+    connector_name = "${local.resource_prefix}-conn"
+  }
   min = 200
   max = 255
 }
