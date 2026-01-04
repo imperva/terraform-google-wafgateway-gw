@@ -222,7 +222,7 @@ data "google_client_config" "this" {}
 
 module "commons" {
   source = "imperva/wafgateway-commons/google"
-  version = "1.2.1"
+  version = "1.2.2"
 }
 
 resource "random_string" "resource_prefix" {

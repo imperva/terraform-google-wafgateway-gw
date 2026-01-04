@@ -76,9 +76,9 @@ module "imperva_gw" {
 ```
 ### Supported WAF Gateway versions
 This version of the module supports the following WAF Gateway versions:
-* 14.7.0.150
 * 14.7.0.160
 * 14.7.0.170
+* 14.7.0.180
 * 15.3.0.10
 * 15.3.0.20
 * 15.4.0.10
@@ -106,7 +106,7 @@ This allows you to register your WAF Gateway instances to your MX without defini
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_commons"></a> [commons](#module\_commons) | imperva/wafgateway-commons/google | 1.2.1 |
+| <a name="module_commons"></a> [commons](#module\_commons) | imperva/wafgateway-commons/google | 1.2.2 |
 ## Resources
 
 | Name | Type |
